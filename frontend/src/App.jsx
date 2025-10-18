@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Landingpage from "./pages/Home/Landingpage";
 import LoginPage from "./Pages/Auth/LoginPage";
-// import Registration from "./pages/Auth/Registration";
+import RegisterPage from "./Pages/Auth/RegisterPage";
 // import CasesPage from "./pages/Advocate/CasesPage";
 // import Dashboard from "./pages/Advocate/Dashboard";
 
@@ -12,8 +12,8 @@ const App = () => {
       <Routes>
         {/* <Route path="/" element={<Landingpage />} /> */}
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="/register" element={<Registration />} />
-        <Route path="/Advocatecase-page" element={<CasesPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        {/* <Route path="/Advocatecase-page" element={<CasesPage />} />
         <Route path="/advocatedashboard" element={<Dashboard />} /> */}
 
       </Routes>

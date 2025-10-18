@@ -1,44 +1,39 @@
 import { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../../Api/Services/'; 
-import Button from '../../components/common/Button';
+import { useNavigate, Link } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleGoogleLogin = () => {
+    console.log('Google login clicked');
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     try {
-      const resultAction = await dispatch(loginUser({ email, password }));
-      
-      if (loginUser.fulfilled.match(resultAction)) {
-        const role = resultAction.payload.role;
-        if (role === 'advocate') navigate('/advocate/dashboard');
-        else if (role === 'client') navigate('/client/dashboard');
-        else if (role === 'admin') navigate('/admin/dashboard');
-      } else {
-        setError(resultAction.payload?.message || 'Login failed');
-      }
-    } catch (err) {
-      setError('Something went wrong');
-    }
-  };
+      const response = await axiosInstance.post('/auth/login', { email, password });
+      const { token, role } = response.data;
+      localStorage.setItem('token', token);
 
-  const handleGoogleLogin = () => {
-    console.log('Google login initiated');
+      if (role === 'advocate') navigate('/advocate/dashboard');
+      else if (role === 'client') navigate('/client/dashboard');
+      else if (role === 'admin') navigate('/admin/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
+    }
   };
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-2xl shadow-2xl border-2 border-gray-100 p-8">
+
           {/* Header */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-4">
@@ -82,9 +77,12 @@ export default function LoginPage() {
               />
             </div>
 
-            <Button type="submit" className="w-full bg-black text-white py-3.5 rounded-lg font-semibold hover:bg-gray-800 transition-all">
+            <button
+              type="submit"
+              className="w-full bg-black text-white py-3.5 rounded-lg font-semibold hover:bg-gray-800 transition-all"
+            >
               Login
-            </Button>
+            </button>
           </form>
 
           {/* Divider */}
@@ -114,10 +112,7 @@ export default function LoginPage() {
           {/* Register link */}
           <div className="text-center mt-6">
             <p className="text-sm text-gray-600 mb-1">Don't have an account?</p>
-            <Link
-              to="/register"
-              className="text-sm text-black font-semibold hover:underline"
-            >
+            <Link to="/register" className="text-sm text-black font-semibold hover:underline">
               Create a new account
             </Link>
           </div>
