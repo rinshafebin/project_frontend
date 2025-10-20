@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axiosInstance from '../../api/axiosInstance';
+import { useAuth } from '../../context/AuthContext';
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [userType, setUserType] = useState("client");
   const [formData, setFormData] = useState({
     fullName: "",
@@ -15,61 +20,105 @@ export default function RegisterPage() {
     barCouncil: "",
     bio: "",
   });
+  const [errors, setErrors] = useState({}); 
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+    setErrors({ ...errors, [e.target.id]: "" }); 
   };
 
   const handleUserTypeChange = (type) => {
     setUserType(type);
+    setErrors({});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
+      setErrors({ confirmPassword: "Passwords do not match!" });
       return;
     }
 
-    const data = {
-      userType,
-      fullName: formData.fullName,
+    const data = userType === "client" ? {
+      username: formData.fullName,
       email: formData.email,
-      phone: formData.phone,
       password: formData.password,
-      ...(userType === "advocate" && {
-        licenseNumber: formData.licenseNumber,
-        specialization: formData.specialization,
-        experience: formData.experience,
-        barCouncil: formData.barCouncil,
-        bio: formData.bio,
-      }),
+      confirm_password: formData.confirmPassword,
+      role: "client",
+    } : {
+      username: formData.fullName,
+      email: formData.email,
+      password: formData.password,
+      confirm_password: formData.confirmPassword,
+      role: "advocate",
+      phone_number: formData.phone,
+      bar_council_number: formData.barCouncil,
+      specialization: formData.specialization,
+      years_of_experience: formData.experience,
+      bio: formData.bio,
+      office_address: "Not Provided",
+      educational_qualification: "Not Provided",
+      languages: "Not Provided",
     };
 
-    console.log("Registration Data:", data);
-    alert(`Registration successful as ${userType}! Check console for details.`);
+    try {
+      const endpoint = userType === "client" ? "/auth/client-register/" : "/auth/advocate-register/";
+      const response = await axiosInstance.post(endpoint, data);
+
+      alert(response.data.message || "Registration successful!");
+      navigate('/login'); 
+    } catch (err) {
+      console.error('Registration error:', err);
+      const backendErrors = err.response?.data || {};
+      const formattedErrors = {};
+
+      Object.keys(backendErrors).forEach((key) => {
+        const value = backendErrors[key];
+        if (Array.isArray(value)) {
+          formattedErrors[key] = value.join(" "); 
+        } else {
+          formattedErrors[key] = value;
+        }
+      });
+
+      setErrors(formattedErrors);
+    }
   };
+
+  const renderInput = ({ label, id, type }) => (
+    <div key={id}>
+      <label className="block text-sm font-medium text-gray-700">{label}</label>
+      <input
+        id={id}
+        type={type}
+        required
+        value={formData[id]}
+        onChange={handleChange}
+        className={`w-full mt-1 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-black transition ${
+          errors[id] ? "border-red-500" : "border-gray-200"
+        }`}
+      />
+      {errors[id] && <p className="text-red-600 text-sm mt-1">{errors[id]}</p>}
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-100 to-white p-4">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
-        <h1 className="text-3xl font-bold text-center text-gray-900 mb-2">
-          Create Account
-        </h1>
-        <p className="text-center text-gray-500 mb-6">
-          Join as a Client or Advocate
-        </p>
+        <h1 className="text-3xl font-bold text-center text-gray-900 mb-2">Create Account</h1>
+        <p className="text-center text-gray-500 mb-6">Join as a Client or Advocate</p>
 
         {/* User Type Selector */}
         <div className="flex gap-2 mb-6 rounded-full bg-gray-100 p-1">
           {["client", "advocate"].map((type) => (
             <button
               key={type}
+              type="button"
               onClick={() => handleUserTypeChange(type)}
               className={`flex-1 py-2 rounded-full font-medium transition-all ${
-                userType === type
-                  ? "bg-black text-white"
-                  : "text-gray-600 hover:bg-gray-200"
+                userType === type ? "bg-black text-white" : "text-gray-600 hover:bg-gray-200"
               }`}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -78,115 +127,54 @@ export default function RegisterPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Basic Info */}
-          {[
-            { label: "Full Name", id: "fullName", type: "text" },
-            { label: "Email Address", id: "email", type: "email" },
-            { label: "Phone Number", id: "phone", type: "tel" },
-            { label: "Password", id: "password", type: "password" },
-            { label: "Confirm Password", id: "confirmPassword", type: "password" },
-          ].map((field) => (
-            <div key={field.id}>
-              <label className="block text-sm font-medium text-gray-700">
-                {field.label}
-              </label>
-              <input
-                id={field.id}
-                type={field.type}
-                required
-                value={formData[field.id]}
-                onChange={handleChange}
-                className="w-full mt-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black transition"
-              />
-            </div>
-          ))}
+          {renderInput({ label: "Full Name", id: "fullName", type: "text" })}
+          {renderInput({ label: "Email Address", id: "email", type: "email" })}
+          {renderInput({ label: "Phone Number", id: "phone", type: "tel" })}
+          {renderInput({ label: "Password", id: "password", type: "password" })}
+          {renderInput({ label: "Confirm Password", id: "confirmPassword", type: "password" })}
 
-          {/* Advocate Fields */}
           {userType === "advocate" && (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Bar License Number
-                  </label>
-                  <input
-                    id="licenseNumber"
-                    type="text"
-                    required
-                    value={formData.licenseNumber}
-                    onChange={handleChange}
-                    className="w-full mt-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Specialization
-                  </label>
-                  <select
-                    id="specialization"
-                    required
-                    value={formData.specialization}
-                    onChange={handleChange}
-                    className="w-full mt-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black transition"
-                  >
-                    <option value="">Select specialization</option>
-                    <option value="criminal">Criminal Law</option>
-                    <option value="civil">Civil Law</option>
-                    <option value="family">Family Law</option>
-                    <option value="corporate">Corporate Law</option>
-                    <option value="property">Property Law</option>
-                    <option value="tax">Tax Law</option>
-                    <option value="labor">Labor Law</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Years of Experience
-                  </label>
-                  <input
-                    id="experience"
-                    type="number"
-                    required
-                    min="0"
-                    value={formData.experience}
-                    onChange={handleChange}
-                    className="w-full mt-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black transition"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Bar Council
-                  </label>
-                  <input
-                    id="barCouncil"
-                    type="text"
-                    required
-                    value={formData.barCouncil}
-                    onChange={handleChange}
-                    className="w-full mt-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black transition"
-                  />
-                </div>
-              </div>
-
+            <>
+              {renderInput({ label: "Bar License Number", id: "licenseNumber", type: "text" })}
               <div>
-                <label className="block text-sm font-medium text-gray-700">
-                  Short Bio
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Specialization</label>
+                <select
+                  id="specialization"
+                  required
+                  value={formData.specialization}
+                  onChange={handleChange}
+                  className={`w-full mt-1 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-black transition ${
+                    errors.specialization ? "border-red-500" : "border-gray-200"
+                  }`}
+                >
+                  <option value="">Select specialization</option>
+                  <option value="criminal">Criminal Law</option>
+                  <option value="civil">Civil Law</option>
+                  <option value="family">Family Law</option>
+                  <option value="corporate">Corporate Law</option>
+                  <option value="property">Property Law</option>
+                  <option value="tax">Tax Law</option>
+                  <option value="labor">Labor Law</option>
+                </select>
+                {errors.specialization && <p className="text-red-600 text-sm mt-1">{errors.specialization}</p>}
+              </div>
+              {renderInput({ label: "Years of Experience", id: "experience", type: "number" })}
+              {renderInput({ label: "Bar Council", id: "barCouncil", type: "text" })}
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Short Bio</label>
                 <textarea
                   id="bio"
                   required
                   value={formData.bio}
                   onChange={handleChange}
                   rows="3"
-                  className="w-full mt-1 px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black transition resize-none"
+                  className={`w-full mt-1 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-black transition resize-none ${
+                    errors.bio ? "border-red-500" : "border-gray-200"
+                  }`}
                 ></textarea>
+                {errors.bio && <p className="text-red-600 text-sm mt-1">{errors.bio}</p>}
               </div>
-            </div>
+            </>
           )}
 
           <button
@@ -199,12 +187,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-gray-500 text-sm mt-5">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-black font-medium hover:underline"
-          >
-            Login here
-          </Link>
+          <Link to="/login" className="text-black font-medium hover:underline">Login here</Link>
         </p>
       </div>
     </div>

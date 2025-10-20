@@ -64,10 +64,10 @@ export default function LoginPage() {
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 transition-transform hover:scale-[1.01] duration-300">
 
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
+            {/* <div className="flex items-center justify-center gap-3 mb-4">
               <Mail className="w-10 h-10 text-black" />
               <span className="text-3xl font-extrabold text-black">CaseBridge</span>
-            </div>
+            </div> */}
             <h1 className="text-2xl font-bold text-gray-900 mb-1">Welcome Back</h1>
             <p className="text-gray-500">Login with your email and password</p>
           </div>
