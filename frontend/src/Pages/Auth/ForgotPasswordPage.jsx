@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, Key } from 'lucide-react';
-import axiosInstance from '../../api/axiosInstance';
+import axiosInstance from '../../Api/axiosInstance';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function ForgotPasswordPage() {

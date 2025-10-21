@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import axiosInstance from '../../api/axiosInstance';
+import axiosInstance from '../../Api/axiosInstance';
 import { useAuth } from '../../context/AuthContext';
 
 export default function LoginPage() {
