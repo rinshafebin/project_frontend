@@ -17,25 +17,43 @@ export default function LoginPage() {
     localStorage.removeItem('refresh_token');
   }, []);
 
+  const redirectByRole = (userRole) => {
+    switch (userRole) {
+      case 'advocate':
+        navigate('/advocate/');
+        break;
+      case 'client':
+        navigate('/client/');
+        break;
+      case 'admin':
+        navigate('/admin/');
+        break;
+      default:
+        navigate('/');
+    }
+  };
+
+  // Standard email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+
     try {
       const response = await axiosInstance.post('/auth/login/', { email, password });
-      const { token, refresh, user, role, message, user_id, mfa_type } = response.data;
+      const { token, refresh, user, message, user_id, mfa_type } = response.data;
 
-      if (message === "MFA required") {
+      // Redirect to MFA if required
+      if (message === 'MFA required') {
         navigate('/mfa-verify', { state: { userId: user_id, mfaType: mfa_type } });
         return;
       }
 
+      // Save tokens and login
       localStorage.setItem('refresh_token', refresh);
       login(user, token);
 
-      if (role === 'advocate') navigate('/advocate/dashboard');
-      else if (role === 'client') navigate('/client/dashboard');
-      else if (role === 'admin') navigate('/admin/dashboard');
-      else navigate('/dashboard');
+      // Redirect based on role
+      redirectByRole(user.role);
 
     } catch (err) {
       const errorMessage = err.response?.data?.message
@@ -46,16 +64,18 @@ export default function LoginPage() {
     }
   };
 
+  // Google login
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     setError('');
+
     try {
       const response = await axiosInstance.post('/auth/google-login/', {
         token: credentialResponse.credential,
       });
 
-      const { token, refresh, user, role, message, user_id, mfa_type } = response.data;
+      const { token, refresh, user, message, user_id, mfa_type } = response.data;
 
-      if (message === "MFA required") {
+      if (message === 'MFA required') {
         navigate('/mfa-verify', { state: { userId: user_id, mfaType: mfa_type } });
         return;
       }
@@ -63,105 +83,106 @@ export default function LoginPage() {
       localStorage.setItem('refresh_token', refresh);
       login(user, token);
 
-      if (role === 'advocate') navigate('/advocate/dashboard');
-      else if (role === 'client') navigate('/client/dashboard');
-      else if (role === 'admin') navigate('/admin/dashboard');
-      else navigate('/dashboard');
+      redirectByRole(user.role);
 
     } catch (err) {
-      setError('Google login failed. Try again.');
+      setError('Google login failed. Please try again.');
     }
   };
 
   const handleGoogleLoginError = () => {
-    setError('Google login failed. Try again.');
+    setError('Google login failed. Please try again.');
   };
 
-return (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-    <div className="w-full max-w-md">
-      <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-10 transition-transform hover:scale-[1.02] duration-300">
+  return (
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-10 transition-transform hover:scale-[1.02] duration-300">
 
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-500 text-sm">Login with your email and password</p>
-        </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded-lg mb-5 shadow-sm">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              required
-              className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-black focus:border-black outline-none transition-all hover:border-gray-400 text-sm"
-            />
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back</h1>
+            <p className="text-gray-500 text-sm">Login with your email and password</p>
           </div>
 
-          <div className="relative">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-              className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-black focus:border-black outline-none transition-all hover:border-gray-400 text-sm"
-            />
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded-lg mb-5 shadow-sm">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+                className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-black focus:border-black outline-none transition-all hover:border-gray-400 text-sm"
+              />
+            </div>
+
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+                className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-black focus:border-black outline-none transition-all hover:border-gray-400 text-sm"
+              />
+            </div>
+
+            <div className="text-right">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-colors shadow-lg hover:shadow-xl text-sm"
+            >
+              Login
+            </button>
+          </form>
+
+          <div className="flex items-center my-6">
+            <hr className="flex-grow border-gray-300" />
+            <span className="mx-3 text-sm text-gray-400">or continue with</span>
+            <hr className="flex-grow border-gray-300" />
           </div>
 
-          <div className="text-right">
-            <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-700 hover:underline transition-colors">
-              Forgot password?
+          <div className="flex justify-center">
+            <div className="w-full rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+                useOneTap
+                theme="outline"
+                text="continue_with"
+                width="100%"
+                shape="pill"
+              />
+            </div>
+          </div>
+
+          <div className="text-center mt-6">
+            <p className="text-sm text-gray-500 mb-1">Don't have an account?</p>
+            <Link
+              to="/register"
+              className="text-sm text-black font-semibold hover:underline"
+            >
+              Create a new account
             </Link>
           </div>
-
-          <button
-            type="submit"
-            className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-colors shadow-lg hover:shadow-xl text-sm"
-          >
-            Login
-          </button>
-        </form>
-
-        <div className="flex items-center my-6">
-          <hr className="flex-grow border-gray-300" />
-          <span className="mx-3 text-sm text-gray-400">or continue with</span>
-          <hr className="flex-grow border-gray-300" />
-        </div>
-
-        {/* Modern Google Login Button */}
-        <div className="flex justify-center">
-          <div className="w-full rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-            <GoogleLogin
-              onSuccess={handleGoogleLoginSuccess}
-              onError={handleGoogleLoginError}
-              useOneTap
-              theme="outline"
-              text="continue_with"
-              width="100%"
-              shape="pill"
-            />
-          </div>
-        </div>
-
-        <div className="text-center mt-6">
-          <p className="text-sm text-gray-500 mb-1">Don't have an account?</p>
-          <Link to="/register" className="text-sm text-black font-semibold hover:underline">
-            Create a new account
-          </Link>
         </div>
       </div>
     </div>
-  </div>
-);
-
+  );
 }

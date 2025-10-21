@@ -3,24 +3,28 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landingpage from "./pages/Home/Landingpage";
 import LoginPage from "./Pages/Auth/LoginPage";
 import RegisterPage from "./Pages/Auth/RegisterPage";
-import VerifyMFA from "./Pages/Auth/VerifyMFA";
+// import VerifyMFA from "./Pages/Auth/VerifyMFA";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
-// import CasesPage from "./pages/Advocate/CasesPage";
-// import Dashboard from "./pages/Advocate/Dashboard";
+
+import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AdvocateDashboard from "./Pages/Advocate/AdvocateDashboard";
+import ClientDashboard from "./Pages/Client/ClientDashboard";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Landingpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/mfa-verify" element={<VerifyMFA />} />
+        {/* <Route path="/mfa-verify" element={<VerifyMFA />} /> */}
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        {/* <Route path="/Advocatecase-page" element={<CasesPage />} />
-        <Route path="/advocatedashboard" element={<Dashboard />} /> */}
-
+        {/* Dashboard Routes */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/advocate" element={<AdvocateDashboard />} />
+        <Route path="/client" element={<ClientDashboard />} />
       </Routes>
     </BrowserRouter>
   );

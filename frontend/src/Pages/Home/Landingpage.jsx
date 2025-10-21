@@ -87,11 +87,11 @@ export default function Landingpage() {
           <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">Streamline your legal case management with secure communication, document sharing, and real-time updates between clients and advocates.</p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link to="/client-register" className="group px-8 py-4 bg-black text-white rounded-lg font-semibold hover:bg-gray-700 hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2">
+            <Link to="/register" className="group px-8 py-4 bg-black text-white rounded-lg font-semibold hover:bg-gray-700 hover:shadow-xl hover:scale-105 transition-all flex items-center gap-2">
               Get Started as Client
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link to="/register-advocate" className="px-8 py-4 bg-white text-black rounded-lg font-semibold border-2 border-black hover:bg-gray-700 hover:text-white hover:scale-105 transition-all">Join as Advocate</Link>
+            <Link to="/register" className="px-8 py-4 bg-white text-black rounded-lg font-semibold border-2 border-black hover:bg-gray-700 hover:text-white hover:scale-105 transition-all">Join as Advocate</Link>
           </div>
 
           {/* Stats */}
@@ -178,14 +178,14 @@ export default function Landingpage() {
           <p className="text-xl text-gray-300 mb-10">Join thousands of clients and advocates using CaseBridge today</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              to="/client-register"
+              to="/register"
               className="group px-8 py-4 bg-white text-black rounded-lg font-semibold hover:bg-gray-700 hover:text-white hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"
             >
               Register as Client
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
-              to="/register-advocate"
+              to="/register"
               className="px-8 py-4 bg-black text-white rounded-lg font-semibold border-2 border-white hover:bg-gray-700 hover:text-white hover:scale-105 transition-all flex items-center justify-center"
             >
               Register as Advocate
