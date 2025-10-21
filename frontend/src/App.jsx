@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landingpage from "./pages/Home/Landingpage";
 import LoginPage from "./Pages/Auth/LoginPage";
 import RegisterPage from "./Pages/Auth/RegisterPage";
-// import VerifyMFA from "./Pages/Auth/VerifyMFA";
+import VerifyMFA from "./Pages/Auth/VerifyMFA";
+import EnableMFA from "./Pages/Auth/EnableMFA";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 
 import AdminDashboard from "./Pages/Admin/AdminDashboard";
@@ -18,7 +19,8 @@ const App = () => {
         <Route path="/" element={<Landingpage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        {/* <Route path="/mfa-verify" element={<VerifyMFA />} /> */}
+        <Route path="/enable-mfa/" element={< EnableMFA/>} />
+        <Route path="/verify-mfa" element={<VerifyMFA />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Dashboard Routes */}

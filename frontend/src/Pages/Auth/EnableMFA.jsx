@@ -1,107 +1,80 @@
-// import { useState } from 'react';
-// import { Shield, Key } from 'lucide-react';
-// import axiosInstance from '../../api/axiosInstance';
-// import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axiosInstance from '../../api/axiosInstance';
 
-// export default function EnableMFA() {
-//   const [step, setStep] = useState(1); // 1 = show QR, 2 = verify code
-//   const [otp, setOtp] = useState('');
-//   const [qrCodeUrl, setQrCodeUrl] = useState('');
-//   const [message, setMessage] = useState('');
-//   const [error, setError] = useState('');
-//   const navigate = useNavigate();
+export default function EnableMFA() {
+  const [qrCode, setQrCode] = useState(null);
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { user } = location.state || {};
 
-//   const handleGenerateMFA = async () => {
-//     setMessage('');
-//     setError('');
-//     try {
-//       // Request backend to generate MFA secret and QR code
-//       const res = await axiosInstance.post('/auth/enable-mfa/');
-//       setQrCodeUrl(res.data.qr_code_url);
-//       setStep(2);
-//     } catch (err) {
-//       setError(err.response?.data?.message || 'Failed to generate MFA setup.');
-//     }
-//   };
+  if (!user) {
+    navigate('/login');
+    return null;
+  }
 
-//   const handleVerifyMFA = async (e) => {
-//     e.preventDefault();
-//     setMessage('');
-//     setError('');
-//     try {
-//       await axiosInstance.post('/auth/mfa/verify/', { otp });
-//       setMessage('MFA enabled successfully!');
-//       setStep(1);
-//       setOtp('');
-//       // Navigate to dashboard or login page
-//       navigate('/dashboard');
-//     } catch (err) {
-//       setError(err.response?.data?.message || 'Invalid OTP. Try again.');
-//     }
-//   };
+  const handleEnableMFA = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post('/auth/enable-mfa/');
+      setQrCode(response.data.qr_code);
+      setMessage(response.data.message);
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Failed to enable MFA. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//   return (
-//     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
-//       <div className="w-full max-w-md bg-white p-10 rounded-3xl shadow-xl border border-gray-100">
-//         <div className="text-center mb-8">
-//           <Shield className="w-12 h-12 mx-auto text-black mb-4" />
-//           <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Enable Multi-Factor Authentication</h1>
-//           <p className="text-gray-500 text-sm">
-//             {step === 1 ? 'Generate a QR code for your authenticator app' : 'Enter the 6-digit code from your app'}
-//           </p>
-//         </div>
+  const handleSkip = () => {
+    if (user.role === 'admin') navigate('/admin');
+    else if (user.role === 'advocate') navigate('/advocate');
+    else navigate('/client');
+  };
 
-//         {message && (
-//           <div className="bg-green-50 border border-green-200 text-green-700 text-sm p-3 rounded-lg mb-5 shadow-sm">
-//             {message}
-//           </div>
-//         )}
+  const handleVerify = () => {
+    // redirect to verify page after scanning QR
+    navigate('/verify-mfa', { state: { userId: user.id, mfaType: 'TOTP' } });
+  };
 
-//         {error && (
-//           <div className="bg-red-50 border border-red-200 text-red-700 text-sm p-3 rounded-lg mb-5 shadow-sm">
-//             {error}
-//           </div>
-//         )}
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-4">Enable MFA</h1>
+        <p className="mb-6 text-gray-600">Enhance your account security by enabling Multi-Factor Authentication.</p>
 
-//         {step === 1 && (
-//           <div className="space-y-5 text-center">
-//             {qrCodeUrl ? (
-//               <img src={qrCodeUrl} alt="MFA QR Code" className="mx-auto mb-4 w-48 h-48" />
-//             ) : (
-//               <p className="text-gray-600 mb-4">Click below to generate your MFA setup.</p>
-//             )}
-//             <button
-//               onClick={handleGenerateMFA}
-//               className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-colors shadow-lg hover:shadow-xl text-sm"
-//             >
-//               Generate QR Code
-//             </button>
-//           </div>
-//         )}
-
-//         {step === 2 && (
-//           <form onSubmit={handleVerifyMFA} className="space-y-5">
-//             <div className="relative">
-//               <Key className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-//               <input
-//                 type="text"
-//                 value={otp}
-//                 onChange={(e) => setOtp(e.target.value)}
-//                 placeholder="Enter 6-digit code"
-//                 required
-//                 className="w-full pl-12 pr-4 py-4 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-black focus:border-black outline-none transition-all hover:border-gray-400 text-sm"
-//               />
-//             </div>
-
-//             <button
-//               type="submit"
-//               className="w-full bg-black text-white py-4 rounded-2xl font-semibold hover:bg-gray-900 transition-colors shadow-lg hover:shadow-xl text-sm"
-//             >
-//               Verify & Enable MFA
-//             </button>
-//           </form>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
+        {!qrCode ? (
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={handleEnableMFA}
+              disabled={loading}
+              className="w-full py-3 bg-black text-white font-semibold rounded-xl hover:bg-gray-800 disabled:opacity-50"
+            >
+              {loading ? 'Enabling...' : 'Enable MFA'}
+            </button>
+            <button
+              onClick={handleSkip}
+              className="w-full py-3 border border-gray-400 text-gray-700 font-semibold rounded-xl hover:bg-gray-100"
+            >
+              Skip
+            </button>
+          </div>
+        ) : (
+          <div>
+            <p className="mb-4 font-medium text-green-700">{message}</p>
+            <img src={qrCode} alt="QR Code" className="mx-auto mb-4" />
+            <p className="text-gray-600 mb-4">Scan this QR code in your authenticator app.</p>
+            <button
+              onClick={handleVerify}
+              className="w-full py-3 bg-black text-white font-semibold rounded-xl hover:bg-gray-800"
+            >
+              Verify OTP
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

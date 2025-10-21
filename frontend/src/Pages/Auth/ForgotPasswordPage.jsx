@@ -28,12 +28,10 @@ export default function ForgotPasswordPage() {
     setError('');
     try {
       await axiosInstance.post('/auth/reset-password/', { email, otp, new_password: password });
-      // Clear inputs
       setStep(1);
       setEmail('');
       setOtp('');
       setPassword('');
-      // Navigate immediately
       navigate('/login');
     } catch (err) {
       setError(err.response?.data?.message || 'OTP verification failed.');

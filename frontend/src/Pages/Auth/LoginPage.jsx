@@ -17,23 +17,22 @@ export default function LoginPage() {
     localStorage.removeItem('refresh_token');
   }, []);
 
-  const redirectByRole = (userRole) => {
-    switch (userRole) {
+  const redirectByRole = (role) => {
+    switch (role) {
       case 'advocate':
-        navigate('/advocate/');
+        navigate('/advocate');
         break;
       case 'client':
-        navigate('/client/');
+        navigate('/client');
         break;
       case 'admin':
-        navigate('/admin/');
+        navigate('/admin');
         break;
       default:
         navigate('/');
     }
   };
 
-  // Standard email/password login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -42,50 +41,43 @@ export default function LoginPage() {
       const response = await axiosInstance.post('/auth/login/', { email, password });
       const { token, refresh, user, message, user_id, mfa_type } = response.data;
 
-      // Redirect to MFA if required
       if (message === 'MFA required') {
-        navigate('/mfa-verify', { state: { userId: user_id, mfaType: mfa_type } });
+        navigate('/verify-mfa', { state: { userId: user_id, mfaType: mfa_type } });
         return;
       }
 
-      // Save tokens and login
       localStorage.setItem('refresh_token', refresh);
       login(user, token);
 
-      // Redirect based on role
-      redirectByRole(user.role);
+      if ((user.role === 'admin' || user.role === 'advocate') && !user.mfa_enabled) {
+        navigate('/enable-mfa', { state: { user } });
+        return;
+      }
 
+      redirectByRole(user.role);
     } catch (err) {
-      const errorMessage = err.response?.data?.message
-        || err.response?.data?.detail
-        || err.response?.data?.error
-        || 'Login failed. Please check your credentials.';
+      const errorMessage =
+        err.response?.data?.message ||
+        err.response?.data?.detail ||
+        err.response?.data?.error ||
+        'Login failed. Please check your credentials.';
       setError(errorMessage);
     }
   };
 
-  // Google login
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     setError('');
-
     try {
       const response = await axiosInstance.post('/auth/google-login/', {
         token: credentialResponse.credential,
       });
 
-      const { token, refresh, user, message, user_id, mfa_type } = response.data;
-
-      if (message === 'MFA required') {
-        navigate('/mfa-verify', { state: { userId: user_id, mfaType: mfa_type } });
-        return;
-      }
+      const { token, refresh, user } = response.data;
 
       localStorage.setItem('refresh_token', refresh);
       login(user, token);
-
       redirectByRole(user.role);
-
-    } catch (err) {
+    } catch {
       setError('Google login failed. Please try again.');
     }
   };
@@ -98,7 +90,6 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md">
         <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-10 transition-transform hover:scale-[1.02] duration-300">
-
           <div className="text-center mb-8">
             <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back</h1>
             <p className="text-gray-500 text-sm">Login with your email and password</p>
@@ -115,6 +106,7 @@ export default function LoginPage() {
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Email"
@@ -127,6 +119,7 @@ export default function LoginPage() {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
@@ -159,16 +152,18 @@ export default function LoginPage() {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-              <GoogleLogin
-                onSuccess={handleGoogleLoginSuccess}
-                onError={handleGoogleLoginError}
-                useOneTap
-                theme="outline"
-                text="continue_with"
-                width="100%"
-                shape="pill"
-              />
+            <div className="w-full flex justify-center">
+              <div className="max-w-xs">
+                <GoogleLogin
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={handleGoogleLoginError}
+                  useOneTap
+                  theme="outline"
+                  text="continue_with"
+                  width="320"
+                  shape="pill"
+                />
+              </div>
             </div>
           </div>
 
