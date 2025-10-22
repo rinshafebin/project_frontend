@@ -9,7 +9,7 @@ import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 
 // import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdvocateDashboard from "./Pages/Advocate/Dashboard/AdvocateDashboard";
-import ClientDashboard from "./Pages/Client/ClientDashboard";
+// import ClientDashboard from "./Pages/Client/ClientDashboard";
 
 const App = () => {
   return (
@@ -25,8 +25,8 @@ const App = () => {
 
         {/* Dashboard Routes */}
         {/* <Route path="/admin" element={<AdminDashboard />} /> */}
-        {/* <Route path="/advocate" element={<AdvocateDashboard />} />
-        <Route path="/client" element={<ClientDashboard />} /> */}
+        <Route path="/advocate" element={<AdvocateDashboard />} />
+        {/* <Route path="/client" element={<ClientDashboard />} /> */}
       </Routes>
     </BrowserRouter>
   );
