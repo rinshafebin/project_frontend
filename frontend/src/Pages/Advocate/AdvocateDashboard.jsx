@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Sidebar from './Sidebar';
+import Sidebar from '../Sidebar';
 import Header from './Header';
 import DashboardStats from './DashboardStats';
 import UpcomingHearings from './UpcomingHearings';
@@ -9,7 +9,7 @@ import CaseCardGrid from './CaseCardGrid';
 import Profile from './Profile';
 import TeamManagement from './TeamManagement';
 
-export default function LegalCaseManagement() {
+export default function AdvocateDashboard() {
   const [activeView, setActiveView] = useState('dashboard');
 
   const navigationItems = [

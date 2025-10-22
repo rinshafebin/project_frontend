@@ -7,8 +7,8 @@ import VerifyMFA from "./Pages/Auth/VerifyMFA";
 import EnableMFA from "./Pages/Auth/EnableMFA";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 
-import AdminDashboard from "./Pages/Admin/AdminDashboard";
-import AdvocateDashboard from "./Pages/Advocate/AdvocateDashboard";
+// import AdminDashboard from "./Pages/Admin/AdminDashboard";
+import AdvocateDashboard from "./Pages/Advocate/Dashboard/AdvocateDashboard";
 import ClientDashboard from "./Pages/Client/ClientDashboard";
 
 const App = () => {
@@ -24,9 +24,9 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Dashboard Routes */}
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/advocate" element={<AdvocateDashboard />} />
-        <Route path="/client" element={<ClientDashboard />} />
+        {/* <Route path="/admin" element={<AdminDashboard />} /> */}
+        {/* <Route path="/advocate" element={<AdvocateDashboard />} />
+        <Route path="/client" element={<ClientDashboard />} /> */}
       </Routes>
     </BrowserRouter>
   );
