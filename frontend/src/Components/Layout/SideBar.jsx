@@ -2,14 +2,14 @@ import React from 'react';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
-    { label: 'Dashboard', path: '/dashboard', active: true },
-    { label: 'Cases', path: '/cases', active: false },
-    { label: 'Clients', path: '/clients', active: false },
-    { label: 'Calendar', path: '/calendar', active: false },
-    { label: 'Team', path: '/team', active: false },
-    { label: 'Notifications', path: '/notifications', badge: 5, active: false },
-    { label: 'Profile', path: '/profile', active: false },
-    { label: 'Settings', path: '/settings', active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Dashboard', path: '/dashboard', active: true },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Cases', path: '/cases', active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Clients', path: '/clients', active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Calendar', path: '/calendar', active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Team', path: '/team', active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Notifications', path: '/notifications', badge: 5, active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Profile', path: '/profile', active: false },
+    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Settings', path: '/settings', active: false },
   ];
 
   return (
@@ -35,6 +35,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold">
+              {/* Placeholder for logo */}
               L
             </div>
             <span className="text-xl font-bold text-black">LegalHub</span>
@@ -63,7 +64,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                     }
                   `}
                 >
-                  <span className="font-medium">{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span>{item.icon}</span>
+                    <span className="font-medium">{item.label}</span>
+                  </div>
                   {item.badge && (
                     <span className="px-2 py-1 text-xs bg-red-500 text-white rounded-full">
                       {item.badge}
@@ -78,7 +82,10 @@ const Sidebar = ({ isOpen, onClose }) => {
           <div className="mt-8 pt-4 border-t border-gray-200">
             <div className="px-4 py-3">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center" />
+                <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+                  {/* Placeholder for user avatar */}
+                  <div className="w-6 h-6 bg-gray-400 rounded-full" />
+                </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-black">Adv. Rajesh Kumar</p>
                   <p className="text-xs text-gray-600">Senior Advocate</p>
