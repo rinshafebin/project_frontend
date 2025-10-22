@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ReactComponent as ViewIcon } from '../../assets/icons/view.svg';
 import { ReactComponent as DownloadIcon } from '../../assets/icons/download.svg';
@@ -23,6 +23,8 @@ const getStatusColor = (status) => {
 };
 
 const CaseCard = ({ caseItem }) => {
+  const [showDetails, setShowDetails] = useState(false); // optional toggle for details
+
   return (
     <motion.div 
       whileHover={{ scale: 1.02 }}
@@ -45,19 +47,24 @@ const CaseCard = ({ caseItem }) => {
       </div>
 
       {/* Details */}
-      <div className="space-y-2 mb-4 text-sm text-black">
-        <p><strong>Client:</strong> {caseItem.client}</p>
-        <p><strong>Type:</strong> {caseItem.type}</p>
-        <p><strong>Court:</strong> {caseItem.court}</p>
-        <p><strong>Filing Date:</strong> {caseItem.filingDate}</p>
-        {caseItem.nextHearing !== '-' && <p><strong>Next Hearing:</strong> {caseItem.nextHearing}</p>}
-      </div>
+      {showDetails && (
+        <div className="space-y-2 mb-4 text-sm text-black">
+          <p><strong>Client:</strong> {caseItem.client}</p>
+          <p><strong>Type:</strong> {caseItem.type}</p>
+          <p><strong>Court:</strong> {caseItem.court}</p>
+          <p><strong>Filing Date:</strong> {caseItem.filingDate}</p>
+          {caseItem.nextHearing !== '-' && <p><strong>Next Hearing:</strong> {caseItem.nextHearing}</p>}
+        </div>
+      )}
 
       {/* Actions */}
       <div className="flex gap-2 pt-4 border-t border-gray-200">
-        <button className="flex-1 px-4 py-2 border border-black text-black rounded-lg hover:bg-gray-50 text-sm flex items-center justify-center gap-2">
+        <button 
+          onClick={() => setShowDetails(!showDetails)}
+          className="flex-1 px-4 py-2 border border-black text-black rounded-lg hover:bg-gray-50 text-sm flex items-center justify-center gap-2"
+        >
           <ViewIcon className="w-4 h-4" />
-          View
+          {showDetails ? 'Hide' : 'View'}
         </button>
         <button className="px-4 py-2 border border-gray-300 text-black rounded-lg hover:bg-gray-50 flex items-center justify-center">
           <DownloadIcon className="w-4 h-4" />

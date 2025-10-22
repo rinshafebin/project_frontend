@@ -1,15 +1,27 @@
 import React from 'react';
+import {
+  LayoutDashboard,
+  Folder,
+  Users,
+  Calendar,
+  Users2,
+  Bell,
+  User,
+  Settings,
+  LogOut,
+  X,
+} from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Dashboard', path: '/dashboard', active: true },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Cases', path: '/cases', active: false },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Clients', path: '/clients', active: false },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Calendar', path: '/calendar', active: false },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Team', path: '/team', active: false },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Notifications', path: '/notifications', badge: 5, active: false },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Profile', path: '/profile', active: false },
-    { icon: <div className="w-5 h-5 bg-gray-400 rounded" />, label: 'Settings', path: '/settings', active: false },
+    { icon: <LayoutDashboard size={18} />, label: 'Dashboard', path: '/dashboard', active: true },
+    { icon: <Folder size={18} />, label: 'Cases', path: '/cases', active: false },
+    { icon: <Users size={18} />, label: 'Clients', path: '/clients', active: false },
+    { icon: <Calendar size={18} />, label: 'Calendar', path: '/calendar', active: false },
+    { icon: <Users2 size={18} />, label: 'Team', path: '/team', active: false },
+    { icon: <Bell size={18} />, label: 'Notifications', path: '/notifications', badge: 5, active: false },
+    { icon: <User size={18} />, label: 'Profile', path: '/profile', active: false },
+    { icon: <Settings size={18} />, label: 'Settings', path: '/settings', active: false },
   ];
 
   return (
@@ -35,7 +47,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className="h-16 flex items-center justify-between px-6 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold">
-              {/* Placeholder for logo */}
               L
             </div>
             <span className="text-xl font-bold text-black">LegalHub</span>
@@ -44,7 +55,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             onClick={onClose}
             className="lg:hidden text-black hover:bg-gray-100 p-1 rounded"
           >
-            ✕
+            <X size={20} />
           </button>
         </div>
 
@@ -65,7 +76,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                   `}
                 >
                   <div className="flex items-center gap-3">
-                    <span>{item.icon}</span>
+                    {item.icon}
                     <span className="font-medium">{item.label}</span>
                   </div>
                   {item.badge && (
@@ -83,8 +94,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             <div className="px-4 py-3">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
-                  {/* Placeholder for user avatar */}
-                  <div className="w-6 h-6 bg-gray-400 rounded-full" />
+                  <User size={20} className="text-gray-700" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-black">Adv. Rajesh Kumar</p>
@@ -92,8 +102,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </div>
               </div>
             </div>
-            <button className="w-full mt-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg text-left">
-              Logout
+            <button className="w-full mt-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg text-left flex items-center gap-2">
+              <LogOut size={16} /> Logout
             </button>
           </div>
         </nav>
