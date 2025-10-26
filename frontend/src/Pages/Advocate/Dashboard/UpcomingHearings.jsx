@@ -1,36 +1,43 @@
 import React from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Clock, Scale } from 'lucide-react';
 
-export default function UpcomingHearings() {
-  const hearings = [
-    { case: 'State vs. Kumar', date: '2025-10-25', time: '10:30 AM', court: 'District Court' },
-    { case: 'Divorce Proceedings', date: '2025-10-28', time: '2:00 PM', court: 'Family Court' },
-    { case: 'Contract Breach', date: '2025-10-30', time: '11:00 AM', court: 'High Court' }
-  ];
-
+export default function UpcomingHearings({ upcomingHearings }) {
   return (
-    <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-        <h2 className="text-lg font-semibold flex items-center gap-2">
-          <Calendar className="w-5 h-5 text-blue-600" /> Upcoming Hearings
+    <div className="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-bold text-black flex items-center gap-2">
+          <Calendar className="w-6 h-6" />
+          Upcoming Hearings
         </h2>
-        <button className="text-blue-600 text-sm font-medium hover:text-blue-700">View All</button>
+        <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">View All</button>
       </div>
-      <div className="p-6 space-y-4">
-        {hearings.map((h, idx) => (
-          <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-            <div className="flex items-center gap-4">
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <Calendar className="w-5 h-5 text-blue-600" />
+      <div className="space-y-4">
+        {upcomingHearings.map(hearing => (
+          <div key={hearing.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+                <h3 className="font-semibold text-black mb-1">{hearing.case}</h3>
+                <p className="text-sm text-gray-600">{hearing.client}</p>
               </div>
-              <div>
-                <h3 className="font-semibold">{h.case}</h3>
-                <p className="text-sm text-gray-600">{h.court}</p>
-              </div>
+              <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                hearing.priority === 'high' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+              }`}>
+                {hearing.priority === 'high' ? 'High Priority' : 'Medium'}
+              </span>
             </div>
-            <div className="text-right">
-              <p className="font-medium">{h.date}</p>
-              <p className="text-sm text-gray-600">{h.time}</p>
+            <div className="flex items-center gap-4 text-sm text-gray-600">
+              <span className="flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                {hearing.date}
+              </span>
+              <span className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                {hearing.time}
+              </span>
+              <span className="flex items-center gap-1">
+                <Scale className="w-4 h-4" />
+                {hearing.court}
+              </span>
             </div>
           </div>
         ))}
