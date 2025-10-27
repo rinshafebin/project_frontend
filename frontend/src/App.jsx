@@ -10,6 +10,8 @@ import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 // import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdvocateDashboard from "./Pages/Advocate/Dashboard/AdvocateDashboard";
 // import ClientDashboard from "./Pages/Client/ClientDashboard";
+import ClientProfile from "./Pages/Advocate/Clients/ClientProfile";
+import AdvocateProfile from "./Pages/Advocate/Dashboard/AdvocateProfile";
 
 const App = () => {
   return (
@@ -27,6 +29,9 @@ const App = () => {
         {/* <Route path="/admin" element={<AdminDashboard />} /> */}
         <Route path="/advocate" element={<AdvocateDashboard />} />
         {/* <Route path="/client" element={<ClientDashboard />} /> */}
+        <Route path="/client-profile" element={<ClientProfile />} />
+        <Route path="/advocate-profile" element={<AdvocateProfile />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -11,16 +11,10 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phone_number: "",
     password: "",
     confirm_password: "",
-    bar_council_number: "",
-    specialization: "",
-    years_of_experience: "",
-    office_address: "",
-    educational_qualification: "",
-    languages: "",
-    bio: "",
+    phone_number: "",        
+    bar_council_number: "",  
   });
   const [errors, setErrors] = useState({}); 
 
@@ -43,30 +37,28 @@ export default function RegisterPage() {
       return;
     }
 
-    const data = userType === "client" ? {
-      username: formData.fullName,
-      email: formData.email,
-      password: formData.password,
-      confirm_password: formData.confirm_password,
-      role: "client",
-    } : {
-      username: formData.fullName,
-      email: formData.email,
-      password: formData.password,
-      confirm_password: formData.confirm_password,
-      role: "advocate",
-      phone_number: formData.phone_number,
-      bar_council_number: formData.bar_council_number,
-      specialization: formData.specialization,
-      years_of_experience: formData.years_of_experience,
-      office_address: formData.office_address,
-      educational_qualification: formData.educational_qualification,
-      languages: formData.languages,
-      bio: formData.bio,
-    };
+    const data = userType === "client" 
+      ? {
+          username: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          confirm_password: formData.confirm_password,
+          role: "client",
+        } 
+      : {
+          username: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          confirm_password: formData.confirm_password,
+          role: "advocate",
+          phone_number: formData.phone_number,
+          bar_council_number: formData.bar_council_number,
+        };
 
     try {
-      const endpoint = userType === "client" ? "/auth/client-register/" : "/auth/advocate-register/";
+      const endpoint = userType === "client" 
+        ? "/auth/client-register/" 
+        : "/auth/advocate-register/";
       const response = await axiosInstance.post(endpoint, data);
 
       alert(response.data.message || "Registration successful!");
@@ -126,7 +118,7 @@ export default function RegisterPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Top row: Full Name + Email */}
+          {/* Full Name + Email */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {renderInput({ label: "Full Name", id: "fullName", type: "text" })}
             {renderInput({ label: "Email Address", id: "email", type: "email" })}
@@ -134,52 +126,13 @@ export default function RegisterPage() {
 
           {/* Advocate-specific fields */}
           {userType === "advocate" && (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderInput({ label: "Phone Number", id: "phone_number", type: "tel" })}
-                {renderInput({ label: "Bar Council Number", id: "bar_council_number", type: "text" })}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Specialization</label>
-                  <select
-                    id="specialization"
-                    required
-                    value={formData.specialization}
-                    onChange={handleChange}
-                    className={`w-full mt-1 px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-black transition ${
-                      errors.specialization ? "border-red-500" : "border-gray-200"
-                    }`}
-                  >
-                    <option value="">Select specialization</option>
-                    <option value="criminal">Criminal Law</option>
-                    <option value="civil">Civil Law</option>
-                    <option value="family">Family Law</option>
-                    <option value="corporate">Corporate Law</option>
-                    <option value="property">Property Law</option>
-                    <option value="tax">Tax Law</option>
-                    <option value="labor">Labor Law</option>
-                  </select>
-                  {errors.specialization && <p className="text-red-600 text-sm mt-1">{errors.specialization}</p>}
-                </div>
-
-                {renderInput({ label: "Years of Experience", id: "years_of_experience", type: "number" })}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderInput({ label: "Office Address", id: "office_address", type: "text" })}
-                {renderInput({ label: "Educational Qualification", id: "educational_qualification", type: "text" })}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderInput({ label: "Languages", id: "languages", type: "text" })}
-                {renderInput({ label: "Short Bio", id: "bio", type: "text" })}
-              </div>
-            </>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {renderInput({ label: "Phone Number", id: "phone_number", type: "tel" })}
+              {renderInput({ label: "Bar Council Number", id: "bar_council_number", type: "text" })}
+            </div>
           )}
 
-          {/* Password + Confirm Password row */}
+          {/* Password + Confirm Password */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {renderInput({ label: "Password", id: "password", type: "password" })}
             {renderInput({ label: "Confirm Password", id: "confirm_password", type: "password" })}
