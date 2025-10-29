@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, Key } from 'lucide-react';
-import axiosInstance from '../../Api/axiosInstance';
+import createAxiosInstance from '../../Api/axiosInstance'; // ✅ new import
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function ForgotPasswordPage() {
@@ -12,11 +12,13 @@ export default function ForgotPasswordPage() {
 
   const navigate = useNavigate();
 
+  const authApi = createAxiosInstance('auth');
+
   const handleSendOTP = async (e) => {
     e.preventDefault();
     setError('');
     try {
-      await axiosInstance.post('/auth/forget-password/', { email });
+      await authApi.post('/auth/forget-password/', { email });
       setStep(2);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to send OTP.');
@@ -27,7 +29,7 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     setError('');
     try {
-      await axiosInstance.post('/auth/reset-password/', { email, otp, new_password: password });
+      await authApi.post('/auth/reset-password/', { email, otp, new_password: password });
       setStep(1);
       setEmail('');
       setOtp('');

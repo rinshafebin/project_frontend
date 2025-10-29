@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../../Api/axiosInstance";
+import createAxiosInstance from "../../../Api/axiosInstance";
 import {
   User,
   Mail,
   Phone,
-  MapPin,
-  Briefcase,
-  Award,
-  BookOpen,
-  Languages,
   Calendar,
   Edit2,
   Save,
   Camera,
-  FileText,
-  Shield,
-  Clock,
-  LogOut,
+  Briefcase,
 } from "lucide-react";
+
+const authApi = createAxiosInstance("auth");
 
 export default function AdvocateProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -49,13 +43,12 @@ export default function AdvocateProfile() {
     upcoming_hearings: [],
   });
 
-  // --- Fetch Profile and Dashboard ---
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [profileRes, dashboardRes] = await Promise.all([
-          axiosInstance.get("/auth/advocate-profile/"),
-          axiosInstance.get("/auth/dashboard/"),
+          authApi.get("/auth/advocate-profile/"),
+          authApi.get("/auth/dashboard/"),
         ]);
 
         if (profileRes.data?.success && profileRes.data.profile) {
@@ -75,7 +68,6 @@ export default function AdvocateProfile() {
     fetchData();
   }, []);
 
-  // --- Save Profile ---
   const handleSave = async () => {
     try {
       const payload = {
@@ -104,7 +96,6 @@ export default function AdvocateProfile() {
     }
   };
 
-  // --- File Upload (Certificates or Profile Picture) ---
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -139,6 +130,7 @@ export default function AdvocateProfile() {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">

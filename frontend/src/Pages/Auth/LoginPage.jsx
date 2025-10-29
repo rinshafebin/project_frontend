@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Mail, Lock } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import axiosInstance from '../../Api/axiosInstance';
+import createAxiosInstance from '../../Api/axiosInstance';
 import { useAuth } from '../../context/AuthContext';
+
+const authApi = createAxiosInstance('auth');
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -38,7 +40,7 @@ export default function LoginPage() {
     setError('');
 
     try {
-      const response = await axiosInstance.post('/auth/login/', { email, password });
+      const response = await authApi.post('/auth/login/', { email, password });
       const { token, refresh, user, message, user_id, mfa_type } = response.data;
 
       if (message === 'MFA required') {
@@ -68,7 +70,7 @@ export default function LoginPage() {
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     setError('');
     try {
-      const response = await axiosInstance.post('/auth/google-login/', {
+      const response = await authApi.post('/auth/google-login/', {
         token: credentialResponse.credential,
       });
 
@@ -152,18 +154,16 @@ export default function LoginPage() {
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full flex justify-center">
-              <div className="max-w-xs">
-                <GoogleLogin
-                  onSuccess={handleGoogleLoginSuccess}
-                  onError={handleGoogleLoginError}
-                  useOneTap
-                  theme="outline"
-                  text="continue_with"
-                  width="320"
-                  shape="pill"
-                />
-              </div>
+            <div className="max-w-xs">
+              <GoogleLogin
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+                useOneTap
+                theme="outline"
+                text="continue_with"
+                width="320"
+                shape="pill"
+              />
             </div>
           </div>
 
