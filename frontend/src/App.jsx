@@ -7,9 +7,9 @@ import VerifyMFA from "./Pages/Auth/VerifyMFA";
 import EnableMFA from "./Pages/Auth/EnableMFA";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 
-import AdvocateDashboard from "./Pages/Advocate/Dashboard/AdvocateDashboard";
+import AdvocateDashboard from "./Pages/Advocate/AdvocateDashboard";
 import ClientHome from "./Pages/Clients/ClientHome";
-import AdvocateProfile from "./Pages/Advocate/Dashboard/AdvocateProfile";
+import AdvocateProfile from "./Pages/Advocate/AdvocateProfile";
 
 const App = () => {
   return (
@@ -26,6 +26,7 @@ const App = () => {
         {/* Dashboard Routes */}
         <Route path="/advocate" element={<AdvocateDashboard />} />
         <Route path="/client" element={<ClientHome />} />
+        
 
         <Route path="/advocate-profile" element={<AdvocateProfile />} />
 

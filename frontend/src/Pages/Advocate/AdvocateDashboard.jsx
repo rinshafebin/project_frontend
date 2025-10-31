@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import { Briefcase, Calendar, FileText, Users } from 'lucide-react'
-
-// Components
-import Sidebar from '../../../Components/Layout/Advocate/Sidebar'
-import Header from '../../../Components/Layout/Advocate/Header'
-import StatsGrid from '../../../Components/Layout/Advocate/StatsGrid'
-import ActiveCases from './ActiveCases'
+import Sidebar from '../../Components/Layout/Advocate/Sidebar'
+import Header from '../../Components/Layout/Advocate/Header'
+import StatsGrid from '../../Components/Layout/Advocate/StatsGrid'
+import ActiveCases from '../Advocate/ActiveCases'
 import UpcomingHearings from './UpcomingHearings'
 import QuickActions from './QuickActions'
 import RecentMessages from './RecentMessages'

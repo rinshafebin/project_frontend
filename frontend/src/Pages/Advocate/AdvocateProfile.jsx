@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import createAxiosInstance from "../../../Api/axiosInstance";
+import createAxiosInstance from "../../Api/axiosInstance";
 import {
   User,
   Mail,
