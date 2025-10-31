@@ -7,10 +7,8 @@ import VerifyMFA from "./Pages/Auth/VerifyMFA";
 import EnableMFA from "./Pages/Auth/EnableMFA";
 import ForgotPasswordPage from "./Pages/Auth/ForgotPasswordPage";
 
-// import AdminDashboard from "./Pages/Admin/AdminDashboard";
 import AdvocateDashboard from "./Pages/Advocate/Dashboard/AdvocateDashboard";
-// import ClientDashboard from "./Pages/Client/ClientDashboard";
-import ClientProfile from "./Pages/Advocate/Clients/ClientProfile";
+import ClientHome from "./Pages/Clients/ClientHome";
 import AdvocateProfile from "./Pages/Advocate/Dashboard/AdvocateProfile";
 
 const App = () => {
@@ -26,10 +24,9 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Dashboard Routes */}
-        {/* <Route path="/admin" element={<AdminDashboard />} /> */}
         <Route path="/advocate" element={<AdvocateDashboard />} />
-        {/* <Route path="/client" element={<ClientDashboard />} /> */}
-        <Route path="/client-profile" element={<ClientProfile />} />
+        <Route path="/client" element={<ClientHome />} />
+
         <Route path="/advocate-profile" element={<AdvocateProfile />} />
 
       </Routes>

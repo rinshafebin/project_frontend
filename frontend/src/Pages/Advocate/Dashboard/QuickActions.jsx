@@ -1,46 +1,55 @@
-import React from 'react';
-import { FileText, Users, Calendar, FolderOpen, AlertCircle } from 'lucide-react';
+import React from "react"
+import { FileText, Users, Calendar, FolderOpen, AlertCircle } from "lucide-react"
 
 export default function QuickActions() {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-6">
-      <h2 className="text-xl font-bold text-black mb-6">Quick Actions</h2>
-      <div className="space-y-3">
-        <button className="w-full bg-black text-white py-3 px-4 rounded-lg hover:bg-gray-800 transition-colors font-medium flex items-center justify-center gap-2">
-          <FileText className="w-5 h-5" /> New Case
+    <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-100 p-6 shadow-sm">
+      {/* Header */}
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+
+      {/* Buttons */}
+      <div className="grid grid-cols-2 gap-3">
+        <button className="col-span-2 py-3 rounded-xl bg-gradient-to-r from-black to-gray-800 text-white font-medium shadow hover:scale-[1.01] transition transform flex items-center justify-center gap-3">
+          <FileText className="w-4 h-4" /> New Case
         </button>
-        <button className="w-full border-2 border-black text-black py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center gap-2">
-          <Users className="w-5 h-5" /> Add Client
+
+        <button className="py-3 rounded-xl border border-gray-200 flex items-center justify-center gap-2 hover:shadow-sm transition">
+          <Users className="w-4 h-4 text-gray-700" /> Add Client
         </button>
-        <button className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center gap-2">
-          <Calendar className="w-5 h-5" /> Schedule Hearing
+
+        <button className="py-3 rounded-xl border border-gray-200 flex items-center justify-center gap-2 hover:shadow-sm transition">
+          <Calendar className="w-4 h-4 text-gray-700" /> Schedule
         </button>
-        <button className="w-full border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 transition-colors font-medium flex items-center justify-center gap-2">
-          <FolderOpen className="w-5 h-5" /> Upload Document
+
+        <button className="py-3 rounded-xl border border-gray-200 flex items-center justify-center gap-2 hover:shadow-sm transition">
+          <FolderOpen className="w-4 h-4 text-gray-700" /> Upload
         </button>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-gray-200">
-        <h3 className="font-semibold text-black mb-4 flex items-center gap-2">
-          <AlertCircle className="w-5 h-5 text-red-500" /> Urgent Tasks
+      {/* Urgent Tasks */}
+      <div className="mt-6 pt-4 border-t border-gray-100">
+        <h3 className="font-medium text-gray-800 mb-3 flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-red-500" /> Urgent Tasks
         </h3>
+
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-700">Review contract for Kumar case</p>
-              <p className="text-xs text-gray-500">Due today</p>
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500 mt-2" />
+            <div>
+              <div className="text-sm text-gray-700">Review contract for Kumar case</div>
+              <div className="text-xs text-gray-400">Due today</div>
             </div>
           </div>
+
           <div className="flex items-start gap-3">
-            <div className="w-2 h-2 bg-amber-500 rounded-full mt-2"></div>
-            <div className="flex-1">
-              <p className="text-sm text-gray-700">Submit evidence documentation</p>
-              <p className="text-xs text-gray-500">Due tomorrow</p>
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500 mt-2" />
+            <div>
+              <div className="text-sm text-gray-700">Submit evidence documentation</div>
+              <div className="text-xs text-gray-400">Due tomorrow</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,20 +1,38 @@
-import React from 'react';
+import React from "react"
+import { motion } from "framer-motion"
 
 export default function StatsGrid({ stats }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       {stats.map((stat, idx) => (
-        <div key={idx} className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-lg transition-shadow">
-          <div className="flex items-center justify-between mb-4">
-            <div className={`${stat.color} w-12 h-12 rounded-lg flex items-center justify-center`}>
-              <stat.icon className="w-6 h-6 text-white" />
+        <motion.div
+          key={idx}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: idx * 0.06 }}
+          className="relative bg-gradient-to-tr from-white/60 to-white/30 rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-xl transition"
+        >
+          <div className="flex items-start justify-between">
+            {/* Icon Section */}
+            <div
+              className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${stat.color} text-white shadow-inner`}
+            >
+              <stat.icon className="w-6 h-6" />
             </div>
-            <span className="text-sm text-gray-500">{stat.change}</span>
+
+            {/* Change Indicator */}
+            <div className="text-sm text-gray-400">{stat.change}</div>
           </div>
-          <h3 className="text-3xl font-bold text-black mb-1">{stat.value}</h3>
-          <p className="text-gray-600 text-sm">{stat.label}</p>
-        </div>
+
+          {/* Value + Label */}
+          <div className="mt-4">
+            <div className="text-3xl font-bold text-gray-900">
+              {stat.value}
+            </div>
+            <div className="text-sm text-gray-500 mt-1">{stat.label}</div>
+          </div>
+        </motion.div>
       ))}
     </div>
-  );
+  )
 }
