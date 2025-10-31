@@ -1,9 +1,11 @@
-import React, { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Bell, Search, User, LogOut } from "lucide-react"
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Bell, Search, User, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const [showProfile, setShowProfile] = useState(false)
+  const [showProfile, setShowProfile] = useState(false);
+  const navigate = useNavigate(); 
 
   return (
     <header className="bg-white/60 backdrop-blur-md border-b border-gray-200 px-8 py-4 sticky top-0 z-10">
@@ -71,11 +73,16 @@ export default function Header() {
 
                   {/* Dropdown Buttons */}
                   <div className="p-3">
-                    <button className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                    {/* ✅ Navigate to Advocate Profile Page */}
+                    <button
+                      onClick={() => navigate("/advocate-profile")}
+                      className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition"
+                    >
                       <User className="w-4 h-4 text-gray-600" />
                       <span className="text-sm text-gray-700">View Profile</span>
                     </button>
-                    <button className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+
+                    <button className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition">
                       <LogOut className="w-4 h-4 text-gray-600" />
                       <span className="text-sm text-gray-700">Logout</span>
                     </button>
@@ -87,5 +94,5 @@ export default function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

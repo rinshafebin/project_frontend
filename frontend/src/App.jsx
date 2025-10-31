@@ -26,7 +26,7 @@ const App = () => {
         {/* Dashboard Routes */}
         <Route path="/advocate" element={<AdvocateDashboard />} />
         <Route path="/client" element={<ClientHome />} />
-        
+
 
         <Route path="/advocate-profile" element={<AdvocateProfile />} />
 
