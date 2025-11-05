@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { Briefcase, Calendar, FileText, Users } from 'lucide-react'
-import Sidebar from '../../Components/Layout/Advocate/Sidebar'
-import Header from '../../Components/Layout/Advocate/Header'
-import StatsGrid from '../../Components/Layout/Advocate/StatsGrid'
-import ActiveCases from '../Advocate/ActiveCases'
-import UpcomingHearings from './UpcomingHearings'
-import QuickActions from './QuickActions'
-import RecentMessages from './RecentMessages'
+import Sidebar from '../../../Components/Layout/Advocate/Sidebar'
+import Header from '../../../Components/Layout/Advocate/Header'
+import StatsGrid from '../../../Components/Layout/Advocate/StatsGrid'
+import ActiveCases from './overview/ActiveCases'
+import UpcomingHearings from './overview/UpcomingHearings'
+import QuickActions from './overview/QuickActions'
 
 export default function AdvocateDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true)

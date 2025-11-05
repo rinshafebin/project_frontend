@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Lock, Shield, Settings, Bell, Globe, Calendar, Palette } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function SettingsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

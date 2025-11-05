@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Calendar, Clock, MapPin, Users, MoreVertical } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function CalendarPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

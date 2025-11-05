@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Plus, Search, Eye, Edit, FileText, Briefcase, Users, Clock, Filter, MoreVertical } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function CasesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

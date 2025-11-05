@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Upload, Search, Filter, FileText, Eye, Download, Trash2, File, MoreVertical } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function DocumentsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

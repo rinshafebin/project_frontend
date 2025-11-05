@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Bell, Check, CheckCheck, Trash2, Filter, Briefcase, Calendar, FileText, Users, MessageSquare } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function NotificationsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

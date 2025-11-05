@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MessageSquare, Search, Send, Paperclip, Phone, Video, MoreVertical, ArrowLeft } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function MessagesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Users, Mail, Phone, Plus, MoreVertical, Briefcase } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function TeamPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);

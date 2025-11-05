@@ -10,8 +10,8 @@ import {
   Calendar,
   MoreVertical,
 } from "lucide-react";
-import Sidebar from "../../Components/Layout/Advocate/Sidebar";
-import Header from "../../Components/Layout/Advocate/Header";
+import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
+import Header from "../../../Components/Layout/Advocate/Header";
 
 export default function ClientsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
