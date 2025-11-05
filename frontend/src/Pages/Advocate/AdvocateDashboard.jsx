@@ -32,13 +32,13 @@ export default function AdvocateDashboard() {
     { id: 4, title: 'Corporate Merger Advisory', caseNo: 'CORP/2025/023', client: 'Tech Ventures Ltd', status: 'Due Diligence', nextHearing: '2025-11-15', priority: 'medium', category: 'Corporate Law' },
   ]
 
-  const recentMessages = [
-    { id: 1, sender: 'Rajesh Kumar', message: 'Thank you for the update on my case. When is the next hearing?', time: '10 mins ago', unread: true, avatar: 'RK', type: 'client' },
-    { id: 2, sender: 'Priya Sharma', message: 'I have sent the additional documents you requested.', time: '1 hour ago', unread: true, avatar: 'PS', type: 'client' },
-    { id: 3, sender: 'Junior Advocate - Amit', message: 'Draft petition ready for your review.', time: '2 hours ago', unread: false, avatar: 'AA', type: 'team' },
-    { id: 4, sender: 'Tech Solutions Ltd', message: 'Can we schedule a meeting this week?', time: '5 hours ago', unread: false, avatar: 'TS', type: 'client' },
-    { id: 5, sender: 'Sarah Johnson', message: 'Got it, thanks for clarifying the legal terms.', time: '1 day ago', unread: false, avatar: 'SJ', type: 'client' },
-  ]
+  // const recentMessages = [
+  //   { id: 1, sender: 'Rajesh Kumar', message: 'Thank you for the update on my case. When is the next hearing?', time: '10 mins ago', unread: true, avatar: 'RK', type: 'client' },
+  //   { id: 2, sender: 'Priya Sharma', message: 'I have sent the additional documents you requested.', time: '1 hour ago', unread: true, avatar: 'PS', type: 'client' },
+  //   { id: 3, sender: 'Junior Advocate - Amit', message: 'Draft petition ready for your review.', time: '2 hours ago', unread: false, avatar: 'AA', type: 'team' },
+  //   { id: 4, sender: 'Tech Solutions Ltd', message: 'Can we schedule a meeting this week?', time: '5 hours ago', unread: false, avatar: 'TS', type: 'client' },
+  //   { id: 5, sender: 'Sarah Johnson', message: 'Got it, thanks for clarifying the legal terms.', time: '1 day ago', unread: false, avatar: 'SJ', type: 'client' },
+  // ]
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -65,7 +65,7 @@ export default function AdvocateDashboard() {
 
                 <div className="space-y-6">
                   <QuickActions />
-                  <RecentMessages recentMessages={recentMessages} />
+                  {/* <RecentMessages recentMessages={recentMessages} /> */}
                 </div>
               </div>
 
