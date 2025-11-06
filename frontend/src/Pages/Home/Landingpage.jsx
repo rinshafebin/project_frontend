@@ -52,7 +52,7 @@ export default function Landingpage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Scale className="w-8 h-8 text-black" />
-              <span className="text-2xl font-bold text-black">CaseBridge</span>
+              <span className="text-2xl font-bold text-black">LegalPro</span>
             </div>
 
             {/* Desktop Navigation */}

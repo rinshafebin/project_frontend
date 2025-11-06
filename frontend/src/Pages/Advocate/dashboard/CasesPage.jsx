@@ -1,83 +1,45 @@
-import React, { useState } from "react";
-import { Plus, Search, Eye, Edit, FileText, Briefcase, Users, Clock, Filter, MoreVertical } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Plus,Search,Eye,Edit,FileText,Briefcase,Users,Clock,Filter,MoreVertical,Loader2 } from "lucide-react";
 import Sidebar from "../../../Components/Layout/Advocate/Sidebar";
 import Header from "../../../Components/Layout/Advocate/Header";
+import { useNavigate } from "react-router-dom";
+import createAxiosInstance from "../../../Api/axiosInstance";
 
 export default function CasesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
+  const [cases, setCases] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  const cases = [
-    {
-      id: 1,
-      title: "Intellectual Property Dispute",
-      caseNo: "IP/2025/001",
-      client: "Innovate Inc",
-      status: "In Progress",
-      nextHearing: "2025-11-05",
-      priority: "high",
-      category: "IP Law",
-    },
-    {
-      id: 2,
-      title: "Employment Contract Case",
-      caseNo: "EMP/2025/042",
-      client: "Sarah Johnson",
-      status: "Document Review",
-      nextHearing: "2025-11-12",
-      priority: "medium",
-      category: "Labor Law",
-    },
-    {
-      id: 3,
-      title: "Real Estate Transaction",
-      caseNo: "RE/2025/089",
-      client: "Green Developers",
-      status: "Negotiation",
-      nextHearing: "2025-11-08",
-      priority: "high",
-      category: "Property Law",
-    },
-    {
-      id: 4,
-      title: "Corporate Merger Advisory",
-      caseNo: "CORP/2025/023",
-      client: "Tech Ventures Ltd",
-      status: "Due Diligence",
-      nextHearing: "2025-11-15",
-      priority: "medium",
-      category: "Corporate Law",
-    },
-    {
-      id: 5,
-      title: "Criminal Defense Case",
-      caseNo: "CRIM/2025/067",
-      client: "Michael Brown",
-      status: "In Progress",
-      nextHearing: "2025-11-10",
-      priority: "high",
-      category: "Criminal Law",
-    },
-    {
-      id: 6,
-      title: "Family Law Matter",
-      caseNo: "FAM/2025/034",
-      client: "Lisa Anderson",
-      status: "Mediation",
-      nextHearing: "2025-11-18",
-      priority: "low",
-      category: "Family Law",
-    },
-  ];
+  const axiosAdvocate = createAxiosInstance("advocate");
+
+  useEffect(() => {
+  const fetchCases = async () => {
+    try {
+      const res = await axiosAdvocate.get("/advocates/cases/");
+      console.log("API Response:", res.data);
+      setCases(res.data.data || []);
+    } catch (err) {
+      console.error("Error fetching cases:", err);
+      setError("Failed to load cases");
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchCases();
+}, []);
+
 
   // Filter + Search logic
   const filteredCases = cases.filter(
     (caseItem) =>
       (filterStatus === "all" || caseItem.status === filterStatus) &&
       (caseItem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        caseItem.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        caseItem.caseNo.toLowerCase().includes(searchTerm.toLowerCase()))
+        caseItem.client_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        caseItem.case_number.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   return (
@@ -98,7 +60,10 @@ export default function CasesPage() {
                   <h2 className="text-2xl font-bold text-gray-900">My Cases</h2>
                   <p className="text-sm text-gray-600 mt-1">{filteredCases.length} total cases</p>
                 </div>
-                <button className="px-4 py-2.5 bg-gradient-to-r from-black to-gray-800 text-white rounded-xl hover:opacity-90 transition flex items-center gap-2 font-medium shadow-sm">
+                <button
+                  onClick={() => navigate("/advocate/cases/create")}
+                  className="px-4 py-2.5 bg-gradient-to-r from-black to-gray-800 text-white rounded-xl hover:opacity-90 transition flex items-center gap-2 font-medium shadow-sm"
+                >
                   <Plus className="w-4 h-4" />
                   New Case
                 </button>
@@ -126,20 +91,25 @@ export default function CasesPage() {
                       className="pl-10 pr-8 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent appearance-none bg-white cursor-pointer transition"
                     >
                       <option value="all">All Status</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Document Review">Document Review</option>
-                      <option value="Negotiation">Negotiation</option>
-                      <option value="Due Diligence">Due Diligence</option>
-                      <option value="Mediation">Mediation</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Active">Active</option>
+                      <option value="Closed">Closed</option>
                     </select>
                   </div>
                 </div>
               </div>
 
               {/* Case List */}
-              <div className="space-y-4">
-                {filteredCases.length > 0 ? (
-                  filteredCases.map((caseItem) => (
+              {loading ? (
+                <div className="flex items-center justify-center py-20 text-gray-500">
+                  <Loader2 className="w-6 h-6 animate-spin mr-2" />
+                  Loading cases...
+                </div>
+              ) : error ? (
+                <div className="text-center text-red-500 py-20">{error}</div>
+              ) : filteredCases.length > 0 ? (
+                <div className="space-y-4">
+                  {filteredCases.map((caseItem) => (
                     <div
                       key={caseItem.id}
                       className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-6 hover:shadow-md transition"
@@ -148,13 +118,13 @@ export default function CasesPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <span className="text-xs font-mono text-gray-500 bg-gray-50 px-2.5 py-1 rounded-lg">
-                              {caseItem.caseNo}
+                              {caseItem.case_number}
                             </span>
                             <span
                               className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                                caseItem.priority === "high"
+                                caseItem.priority === "High"
                                   ? "bg-red-100 text-red-700"
-                                  : caseItem.priority === "medium"
+                                  : caseItem.priority === "Medium"
                                   ? "bg-amber-100 text-amber-700"
                                   : "bg-green-100 text-green-700"
                               }`}
@@ -177,7 +147,7 @@ export default function CasesPage() {
                           <div>
                             <p className="text-xs text-gray-500">Client</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {caseItem.client}
+                              {caseItem.client_name || "—"}
                             </p>
                           </div>
                         </div>
@@ -193,25 +163,28 @@ export default function CasesPage() {
                         <div className="flex items-start gap-2">
                           <FileText className="w-4 h-4 text-gray-400 mt-0.5" />
                           <div>
-                            <p className="text-xs text-gray-500">Category</p>
+                            <p className="text-xs text-gray-500">Result</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {caseItem.category}
+                              {caseItem.result || "Pending"}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-start gap-2">
                           <Clock className="w-4 h-4 text-gray-400 mt-0.5" />
                           <div>
-                            <p className="text-xs text-gray-500">Next Hearing</p>
+                            <p className="text-xs text-gray-500">Hearing Date</p>
                             <p className="text-sm font-medium text-gray-900">
-                              {caseItem.nextHearing}
+                              {caseItem.hearing_date || "—"}
                             </p>
                           </div>
                         </div>
                       </div>
 
                       <div className="flex gap-2 pt-4 border-t border-gray-100">
-                        <button className="flex-1 py-2 rounded-xl bg-gradient-to-r from-black to-gray-800 text-white font-medium hover:opacity-90 transition flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => navigate(`/advocate/cases/${caseItem.id}`)}
+                          className="flex-1 py-2 rounded-xl bg-gradient-to-r from-black to-gray-800 text-white font-medium hover:opacity-90 transition flex items-center justify-center gap-2"
+                        >
                           <Eye className="w-4 h-4" />
                           View Details
                         </button>
@@ -225,15 +198,15 @@ export default function CasesPage() {
                         </button>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-100 p-12 text-center">
-                    <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-500 text-lg font-medium">No cases found</p>
-                    <p className="text-gray-400 text-sm mt-1">Try adjusting your search or filters</p>
-                  </div>
-                )}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-100 p-12 text-center">
+                  <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 text-lg font-medium">No cases found</p>
+                  <p className="text-gray-400 text-sm mt-1">Try adjusting your search or filters</p>
+                </div>
+              )}
             </div>
           </main>
         </div>

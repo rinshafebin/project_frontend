@@ -1,4 +1,4 @@
-// src/utils/axiosInstance.js
+// ✅ Improved axiosInstance.js
 import axios from 'axios';
 import apiConfig from '../config/apiConfig.js';
 
@@ -7,28 +7,14 @@ const createAxiosInstance = (serviceName) => {
 
   const instance = axios.create({
     baseURL: BASE_URL,
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: false, // change to true if using cookies
   });
 
   instance.interceptors.request.use(
     (config) => {
-      const authEndpoints = [
-        '/auth/login/',
-        '/auth/register/',
-        '/auth/forget-password/',
-        '/auth/mfa/generate/',
-        '/auth/mfa/verify/',
-        '/auth/mfa/disable/',
-      ];
-
-      const isAuthEndpoint = authEndpoints.some(endpoint => config.url?.includes(endpoint));
-      if (!isAuthEndpoint) {
-        const token = localStorage.getItem('token');
-        if (token) config.headers.Authorization = `Bearer ${token}`;
-      }
-
+      const token = localStorage.getItem('token');
+      if (token) config.headers.Authorization = `Bearer ${token}`;
       return config;
     },
     (error) => Promise.reject(error)

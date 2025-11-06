@@ -17,6 +17,8 @@ import TeamPage from "./Pages/Advocate/dashboard/TeamPage";
 import SettingsPage from "./Pages/Advocate/dashboard/SettingsPage";
 import NotificationsPage from "./Pages/Advocate/dashboard/NotificationsPage";
 import MessagesPage from "./Pages/Advocate/dashboard/MessagesPage";
+import CreateCasePage from "./Pages/Advocate/cases/CreateCasePage";
+import CaseDetailPage from "./Pages/Advocate/cases/CaseDetailPage";
 
 
 
@@ -44,6 +46,10 @@ const App = () => {
         <Route path="advocate/settings" element={<SettingsPage />} />
         <Route path="/advocate/messages" element={<MessagesPage />} />
         <Route path="/advocate/notifications" element={< NotificationsPage />} />
+        <Route path="/advocate/cases/create" element={< CreateCasePage />} />
+        <Route path="/advocate/cases/:id" element={<CaseDetailPage />} />
+
+
         
 
         

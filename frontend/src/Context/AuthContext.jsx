@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -6,10 +6,18 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  const login = (userData, token) => {
-    setToken(token);
+  useEffect(() => {
+    if (token && !user) {
+      // Optionally fetch user profile using the token here
+      // e.g., axiosInstance.get('/auth/me/')
+      setUser({}); // placeholder if needed
+    }
+  }, [token]);
+
+  const login = (userData, tokenValue) => {
+    setToken(tokenValue);
     setUser(userData);
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", tokenValue);
   };
 
   const logout = () => {
