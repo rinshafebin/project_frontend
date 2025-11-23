@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 const authApi = createAxiosInstance("auth");
+const advocateApi = createAxiosInstance("advocate")
 
 export default function AdvocateProfile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -48,7 +49,7 @@ export default function AdvocateProfile() {
       try {
         const [profileRes, dashboardRes] = await Promise.all([
           authApi.get("/auth/advocate-profile/"),
-          authApi.get("/auth/dashboard/"),
+          advocateApi.get("/advocates/dashboard/"),
         ]);
 
         if (profileRes.data?.success && profileRes.data.profile) {
@@ -81,7 +82,7 @@ export default function AdvocateProfile() {
         bio: advocateData.bio,
       };
 
-      const res = await axiosInstance.put("/auth/advocate-profile/", payload);
+      const res = await authApi.put("/auth/advocate-profile/", payload);
 
       if (res.data && res.data.success) {
         setAdvocateData({ ...advocateData, ...res.data.profile });
@@ -104,7 +105,7 @@ export default function AdvocateProfile() {
     formData.append("certificates", file);
 
     try {
-      const res = await axiosInstance.put("/auth/advocate-profile/", formData, {
+      const res = await authApi.put("/auth/advocate-profile/", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

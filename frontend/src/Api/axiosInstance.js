@@ -8,7 +8,7 @@ const createAxiosInstance = (serviceName) => {
   const instance = axios.create({
     baseURL: BASE_URL,
     headers: { 'Content-Type': 'application/json' },
-    withCredentials: false, // change to true if using cookies
+    withCredentials: false, 
   });
 
   instance.interceptors.request.use(

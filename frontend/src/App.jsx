@@ -19,6 +19,9 @@ import NotificationsPage from "./Pages/Advocate/dashboard/NotificationsPage";
 import MessagesPage from "./Pages/Advocate/dashboard/MessagesPage";
 import CreateCasePage from "./Pages/Advocate/cases/CreateCasePage";
 import CaseDetailPage from "./Pages/Advocate/cases/CaseDetailPage";
+import CaseEditPage from "./Pages/Advocate/cases/CaseEditPage";
+
+import ClientHome from "./Pages/Clients/ClientHome";
 
 
 
@@ -35,7 +38,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Dashboard Routes */}
-        {/* <Route path="/client" element={<ClientHome />} /> */}
+        <Route path="/client" element={<ClientHome />} />
         <Route path="/advocate/profile" element={<AdvocateProfile />} />
         <Route path="/advocate" element={<AdvocateDashboard />} />
         <Route path="/advocate/cases" element={<CasesPage />} />
@@ -48,6 +51,8 @@ const App = () => {
         <Route path="/advocate/notifications" element={< NotificationsPage />} />
         <Route path="/advocate/cases/create" element={< CreateCasePage />} />
         <Route path="/advocate/cases/:id" element={<CaseDetailPage />} />
+        <Route path="/advocate/cases/edit" element={<CaseEditPage />} />
+
 
 
         
